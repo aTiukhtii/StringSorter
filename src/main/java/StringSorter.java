@@ -11,7 +11,6 @@ public class StringSorter {
 
         if (sortedStrings.size() == 0) {
             return unsortedStrings.stream()
-                    .filter(str -> str.startsWith(exceptionChar))
                     .sorted()
                     .toList();
         }
