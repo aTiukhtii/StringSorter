@@ -1,27 +1,26 @@
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StringSorter {
     public List<String> sortStrings(List<String> unsortedStrings, String exceptionChar) {
-        List<String> exceptionStrings = new ArrayList<>();
-        List<String> sortedStrings = new ArrayList<>();
-
-        for (String str : unsortedStrings) {
-            if (str.startsWith(exceptionChar)) {
-                exceptionStrings.add(str);
-            } else {
-                sortedStrings.add(str);
-            }
-        }
+        List<String> sortedStrings = unsortedStrings.stream()
+                .filter(str -> !str.startsWith(exceptionChar))
+                .sorted()
+                .collect(Collectors.toList());
 
         if (sortedStrings.size() == 0) {
-            Collections.sort(exceptionStrings);
-            return exceptionStrings;
+            return unsortedStrings.stream()
+                    .filter(str -> str.startsWith(exceptionChar))
+                    .sorted()
+                    .toList();
         }
 
-        Collections.sort(sortedStrings);
-        exceptionStrings.sort(Collections.reverseOrder());
+        List<String> exceptionStrings = unsortedStrings.stream()
+                .filter(str -> str.startsWith(exceptionChar))
+                .sorted(Collections.reverseOrder())
+                .toList();
+
         sortedStrings.addAll(exceptionStrings);
         return sortedStrings;
     }
